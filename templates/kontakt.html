@@ -1,0 +1,15 @@
+{% extends "osnova.html" %}
+
+{% block vsebina %}
+    <h1>Kontakt</h1>
+
+<!--Forma naj dela post zahtevo!! nastavi z method....povedati moramo tudi na katero formo naj se ta atribut pošlje z acction
+ko v brskalniku kliknemo pošlji se naredi post zahteva.... -->
+    <form method="post" action="/poslji-sporocilo">
+        <p>Zadeva: <input name="zadeva"></p>
+        <p>Sporočilo: <input name="sporocilo"></p>
+        <p><button type="submit">Pošlji</button></p>
+
+    </form>
+
+{% endblock %}
