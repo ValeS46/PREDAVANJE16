@@ -23,7 +23,7 @@ def poslji_sporocilo():
 
     print ("Zadeva je: " + zadeva)
     print ("Sporocilo je: " + sporocilo)
-    return "Hvala za poslano zadevo: " + zadeva + " " + sporocilo
+    return render_template ("prikaz_sporocila.html", zadeva=zadeva)
 
 @app.route("/omeni")
 def omeni ():
