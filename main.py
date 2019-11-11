@@ -36,8 +36,8 @@ def prijava ():
     return odgovor
 
 @app.route("/komentar", methods=["POST"])
-def poslji komentar():
-    vsebina komentarja = request.form.get("vsebina")
+def poslji_komentar():
+    vsebina_komentarja = request.form.get("vsebina")
 
 
     #tukaj se bo komentar shranil v podatkovno bazo
