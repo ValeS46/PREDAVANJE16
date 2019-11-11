@@ -1,12 +1,14 @@
 #import knjiznice 2 nacina
 #request lahko uporabljamo samo za POST methodo
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, make_response
 
 app = Flask(__name__)
 
 @app.route("/")
 def prva_stran():
-    return render_template ("prva_stran.html")
+    ime = request.cookies.get("ime")
+
+    return render_template ("prva_stran.html", ime=ime)
 
 @app.route("/kontakt")
 def kontakt ():
@@ -25,9 +27,13 @@ def poslji_sporocilo():
     print ("Sporocilo je: " + sporocilo)
     return render_template ("prikaz_sporocila.html", zadeva=zadeva)
 
-@app.route("/omeni")
-def omeni ():
-    return render_template ("omeni.html")
+@app.route("/prijava", methods=["POST"])
+def prijava ():
+    ime = request.form.get("ime")
+
+    odgovor = make_response(redirect("/"))
+    odgovor.set_cookie("ime", ime)
+    return odgovor
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
