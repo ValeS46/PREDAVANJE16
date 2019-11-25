@@ -4,7 +4,7 @@ from sqla_wrapper import SQLAlchemy
 #get envoriment value
 #sqlite/// kjer se bodo podatki shranjevali lokalno
 #os.getenv
-db = SQLAlchemy(os.getenv("DATABASE_URL", "sqlite:///podatkova-baza.sqlite"))
+db = SQLAlchemy(os.getenv("DATABASE_URL", "sqlite:///podatkova-baza.sqlite?check_same_thread=False"))
 
 #gre za podatkovne baze in je treba eksplicitno nastaviti tip polja
 #primary key nastavimo samo tistemu ki je ključ
