@@ -60,6 +60,9 @@ def prijava ():
     if not uporabnik:
         uporabnik = Uporabnik(ime=ime, email="", geslo=geslo, sejna_vrednost=sejna_vrednost)
     else:
+        if uporabnik.je_blokiran:
+            return "Uporabnik blokiran, prijava ni mogoča"
+
         if geslo == uporabnik.geslo:
             uporabnik.sejna_vrednost = sejna_vrednost
         else:
@@ -168,9 +171,21 @@ def uporabnik():
     return render_template("uporabniki.html", uporabniki=users)
 
 #db.querry izpiši!!
-@app.route("/uporabniki/<uporabnik_id>")
+@app.route("/uporabniki/<uporabnik_id>", methods=["GET", "POST"])
 def prikaz_uporabnika(uporabnik_id):
     uporabnik = db.query(Uporabnik).filter_by(id=uporabnik_id).first()
+
+    if request.method == "POST":
+
+        blokiran = False
+        if request.form.get ("je_blokiran") == "on":
+            blokiran = True
+
+        uporabnik.je_blokiran = blokiran
+
+        db.add(uporabnik)
+        db.commit()
+
     return render_template("prikaz_uporabnika.html", uporabnik=uporabnik)
 
 if __name__ == '__main__':

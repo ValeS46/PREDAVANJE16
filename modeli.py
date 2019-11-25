@@ -21,3 +21,6 @@ class Uporabnik(db.Model):
     geslo = db.Column(db.String)
     sejna_vrednost = db.Column(db.String)
     #session cookie
+    je_blokiran = db.Column(db.Boolean, default=False)
+
+#tip spremenljivke boolean je true ali false!!!
