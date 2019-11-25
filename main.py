@@ -161,5 +161,11 @@ def izbrisi_profil():
         odgovor.set_cookie("sejna_vrednost", expires=0)
         return odgovor
 
+#return render template pomeni izpiši/prikazi mi stran...
+@app.route("/uporabniki")
+def uporabnik():
+    users = db.query(Uporabnik).all()
+    return render_template("uporabniki.html", uporabniki=users)
+
 if __name__ == '__main__':
     app.run(debug=True)
