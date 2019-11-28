@@ -1,4 +1,5 @@
 import hashlib
+import json
 import random
 import uuid
 #uuid nam generira nakljucne stringe
@@ -6,6 +7,8 @@ import uuid
 #request lahko uporabljamo samo za POST methodo
 from flask import Flask, render_template, request, redirect, make_response
 #import komentarja iz druge datoteke...
+import requests
+
 from modeli import Komentar, db, Uporabnik
 
 app = Flask(__name__)
@@ -187,6 +190,23 @@ def prikaz_uporabnika(uporabnik_id):
         db.commit()
 
     return render_template("prikaz_uporabnika.html", uporabnik=uporabnik)
+
+
+#žarnica import pip render requests
+@app.route("/vreme")
+def vreme():
+    mesto = "Vrhnika"
+    odgovor_geo = json.loads(requests.get("https://geocode.xyz/" + mesto + "?json=1").text)
+    lon = odgovor_geo["longt"]
+    lat = odgovor_geo["latt"]
+
+    url = "https://opendata.si/vreme/report/?lat=" + lat + "&lon=" + lon
+    odgovor = json.loads(requests.get(url).text)
+
+    print(odgovor)
+    dez = odgovor ["forecast"]["data"][0]["rain"]
+
+    return render_template("vreme.html", vreme=dez)
 
 if __name__ == '__main__':
     app.run(debug=True)
