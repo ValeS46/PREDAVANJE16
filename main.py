@@ -195,18 +195,28 @@ def prikaz_uporabnika(uporabnik_id):
 #žarnica import pip render requests
 @app.route("/vreme")
 def vreme():
-    mesto = "Vrhnika"
-    odgovor_geo = json.loads(requests.get("https://geocode.xyz/" + mesto + "?json=1").text)
-    lon = odgovor_geo["longt"]
-    lat = odgovor_geo["latt"]
+    mesto = request.args.get("lokacija")
 
-    url = "https://opendata.si/vreme/report/?lat=" + lat + "&lon=" + lon
-    odgovor = json.loads(requests.get(url).text)
+    if mesto:
+        odgovor_geo = json.loads(requests.get("https://geocode.xyz/" + mesto + "?json=1").text)
+        lon = odgovor_geo["longt"]
+        lat = odgovor_geo["latt"]
 
-    print(odgovor)
-    dez = odgovor ["forecast"]["data"][0]["rain"]
+        url = "https://opendata.si/vreme/report/?lat=" + lat + "&lon=" + lon
 
-    return render_template("vreme.html", vreme=dez)
+        #Alternativni načini
+        # url = "https://opendata.si/vreme/report/?lat=" + lat + "&lon=" + lon
+        # url = "https://opendata.si/vreme/report/?lat=" + lat + "&lon=" + lon
+        # url = "https://opendata.si/vreme/report/?lat=" + lat + "&lon=" + lon
+
+        odgovor = json.loads(requests.get(url).text)
+
+        print(odgovor)
+        dez = odgovor ["forecast"]["data"][0]["rain"]
+    else:
+        dez = None
+
+    return render_template("vreme.html", vreme=dez, mesto=mesto)
 
 if __name__ == '__main__':
     app.run(debug=True)
